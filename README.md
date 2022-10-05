@@ -19,19 +19,17 @@ or download as a zip file on the github webpage.
 
 Next you must check, that you have python and psutil library download. In the linux os you can check it by writting the information in terminal: 
 
-### `python3 --version` to check if have python
+### `python3 --version` to check if you have python
 
 You should get information similary to that:
 
 ### `Python 3.9.7`
 
-### `pip list` to check if have psutil
+### `pip list` to check if you have psutil
 
 You should get information similary to that:
 
-### `Package            Version
------------------- ---------
-certifi            2022.6.15
+### `Package            Version\n------------------ ---------\ncertifi            2022.6.15
 charset-normalizer 2.1.0
 idna               3.3
 pip                22.2.2
