@@ -30,8 +30,8 @@ You should get information similary to that:
 You should get information similary to that:
 
 ### 
-Package            Version
------------------- ---------
+```Package            Version```
+```------------------ ---------```
 certifi            2022.6.15
 charset-normalizer 2.1.0
 idna               3.3
@@ -41,7 +41,7 @@ pyserial           3.5
 requests           2.28.1
 setuptools         57.4.0
 urllib3            1.26.9
-vcgencmd           0.1.1
+vcgencmd           0.1.1```
 
 If you don't have download python you can do it <a href="https://www.python.org/downloads/">here</a>.
 If you don't have download psutil you can do it by writting the text in terminal: 
