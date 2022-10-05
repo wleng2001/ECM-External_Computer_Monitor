@@ -30,8 +30,7 @@ You should get information similary to that:
 You should get information similary to that:
 
 ### 
-```Package            Version```
-```------------------ ---------```
+```{Package            Version} {------------------ ---------}```
 certifi            2022.6.15
 charset-normalizer 2.1.0
 idna               3.3
