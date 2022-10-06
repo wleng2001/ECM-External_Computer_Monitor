@@ -1,28 +1,32 @@
-port='COM5'
 baudrate=115200
 
+
+## library import---------------------------------------------------------------------------------
 from psutil import cpu_percent, cpu_freq, virtual_memory
 from serial import *
 from time import sleep
 from sys import platform
 
-def wskaznik(procent, dlugosc):
-    ramka_p='('
-    ramka_t=')'
-    dlugosc=dlugosc-2
-    precent_div_sign=round(100/dlugosc,2)
-    wskaznik=ramka_p
+
+##functions definition----------------------------------------------------------------------------
+def pointer(precent, length):
+    frame_l='('
+    frame_r=')'
+    length=length-2
+    precent_div_sign=round(100/length,2)
+    pointer=frame_l
     i=precent_div_sign
     while i<100+precent_div_sign:
         if i>100:
             i=100
-        if procent>=i:
-            wskaznik+="="
+        if precent>=i:
+            pointer+="="
         else:
-            wskaznik+=" "
+            pointer+=" "
         i+=precent_div_sign
-    return wskaznik+ramka_t
+    return pointer+frame_r
 
+##sign, which show, that program work correctly on external device display
 def load_sign(width,last_position):
     empty='-'
     busy='>>>'
@@ -42,15 +46,15 @@ def load_sign(width,last_position):
     return text, last_position
 
 
-
-def stojaca_liczba(liczba, max_dlug):
-    liczba_ret=''
+##allow to take up the same space by number
+def const_number(number, max_lenght):
+    ret_number=''
     i=10
-    while i<=max_dlug:
-       if i>liczba:
-           liczba_ret+=' '
+    while i<=max_lenght:
+       if i>number:
+           ret_number+=' '
        i*=10    
-    return liczba_ret+str(liczba)
+    return ret_number+str(number)
 
 def write_cpu_stats(height,width, last_position): #height and width in sign amount
     text=""
@@ -60,29 +64,29 @@ def write_cpu_stats(height,width, last_position): #height and width in sign amou
     if width<18:
         cpu_usage=int(cpu_percent())
         text+="CPU "
-        text+=wskaznik(cpu_usage+4, width-4)
+        text+=pointer(cpu_usage+4, width-4)
     else:
         cpu_usage=int(cpu_percent())
-        text+="CPU "+stojaca_liczba(cpu_usage,100)+"% "
-        text+=wskaznik(cpu_usage+4, width-9)
+        text+="CPU "+const_number(cpu_usage,100)+"% "
+        text+=pointer(cpu_usage+4, width-9)
 
     cpu_frequent=round(cpu_freq()[0]/1000, 1)
     cpu_freq_max=round(cpu_freq()[2]/1000, 1)
     if width<18:
         text+="Freq "
-        text+=wskaznik(cpu_frequent/cpu_freq_max*100, width-5)
+        text+=pointer(cpu_frequent/cpu_freq_max*100, width-5)
     else:
-        text+="CPU "+stojaca_liczba(cpu_frequent,10)+"GHz "
-        text+=wskaznik(cpu_frequent/cpu_freq_max*100, width-12)
+        text+="CPU "+const_number(cpu_frequent,10)+"GHz "
+        text+=pointer(cpu_frequent/cpu_freq_max*100, width-12)
 
     if width<18:
         ram_usage=int(virtual_memory()[2])
         text+="RAM "
-        text+=wskaznik(ram_usage+4, width-4)
+        text+=pointer(ram_usage+4, width-4)
     else:
         ram_usage=int(virtual_memory()[2])
-        text+="RAM "+stojaca_liczba(ram_usage,100)+"% "
-        text+=wskaznik(ram_usage+4, width-9)
+        text+="RAM "+const_number(ram_usage,100)+"% "
+        text+=pointer(ram_usage+4, width-9)
 
     text1, last_position = load_sign(width, last_position)
     text+=text1
@@ -130,6 +134,9 @@ def find_port(port_n, min_port, max_port):
         if ser!=None:
             break
     return ser
+
+
+##-----------------------------------------------------------------------------------------------------------------------------
 
 ser = port_conf(find_os(), 0, 10)
 
