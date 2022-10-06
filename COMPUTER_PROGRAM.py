@@ -119,6 +119,7 @@ def find_port(port_n, min_port, max_port):
     ser=None
     for a_port in range(min_port, max_port):
         print(f"Search port... I'm on the port: {port_n+str(a_port)}")
+        sleep(0.1)
         if a_port>max_port:
             print("ERROR! Don't find right port in the range.")
             return None
@@ -137,6 +138,7 @@ last_position=0
 while True:
     if ser==None:
         print("Device isn't connected")
+        sleep(5)
         break
     text, last_position=write_cpu_stats(4,21, last_position)
     print(text)
