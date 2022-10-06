@@ -53,7 +53,7 @@ If you don't have download psutil you can do it by writting the text in terminal
 
 If you don't have download pip you can do it by writting the text in terminal:
 
-#### ``sudo apt install python3-pip
+#### ``sudo apt install python3-pip``
 
 ### Windows device
 
