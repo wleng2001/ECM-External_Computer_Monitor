@@ -4,6 +4,7 @@ baudrate=115200
 from psutil import cpu_percent, cpu_freq, virtual_memory
 from serial import *
 from time import sleep
+from sys import platform
 
 def wskaznik(procent, dlugosc):
     ramka_p='('
@@ -40,8 +41,7 @@ def load_sign(width,last_position):
     
     return text, last_position
 
-#com conf
-ser=Serial(port=port, baudrate=baudrate, parity=PARITY_NONE, stopbits=STOPBITS_ONE, bytesize=EIGHTBITS, timeout=2)
+
 
 def stojaca_liczba(liczba, max_dlug):
     liczba_ret=''
@@ -89,9 +89,55 @@ def write_cpu_stats(height,width, last_position): #height and width in sign amou
 
     return text, last_position
 
+#find os
+def find_os():
+    if platform=='win32':
+        print('Your os is windows')
+        return 'win'
+    elif platform=='linux' or platform=='linux2':
+        print('Your os is linux')
+        return 'linux'
+    else:
+        print('Your os is OS X')
+        return 'OS X'
+
+#com conf
+def port_conf(os, min_port, max_port):
+    port_n=''
+    if os=='win':
+        port_n='COM'
+        print(f"Windows port name started at \"{port_n}\"")
+    elif os=='linux':
+        port_n='usb'
+        print(f"Linux port name started at \"{port_n}\"")
+    else:
+        return None
+    ser=find_port(port_n, min_port, max_port)
+    return ser
+
+def find_port(port_n, min_port, max_port):
+    ser=None
+    for a_port in range(min_port, max_port):
+        print(f"Search port... I'm on the port: {port_n+str(a_port)}")
+        if a_port>max_port:
+            print("ERROR! Don't find right port in the range.")
+            return None
+        try:
+            ser = Serial(port=port_n+str(a_port), baudrate=baudrate, parity=PARITY_NONE, stopbits=STOPBITS_ONE, bytesize=EIGHTBITS, timeout=2)
+        except:
+            print(f"Device isn't connected to {port_n+str(a_port)}")
+        if ser!=None:
+            break
+    return ser
+
+ser = port_conf(find_os(), 0, 10)
+
 last_position=0
 
 while True:
+    if ser==None:
+        print("Device isn't connected")
+        break
     text, last_position=write_cpu_stats(4,21, last_position)
     print(text)
     ser.write(str.encode(text))
