@@ -125,10 +125,10 @@ Next program starts to search ports:
 
 If device isn't connected to port *COM0* you get the information:
 
-### `Device isn't connected to COM0`
+#### `Device isn't connected to COM0`
 
 Program goes to next port and it search to port *COM9*.
 If it find device it starts to send information similary to that:
-### `                     CPU   6% (=         )CPU  3.3GHz (=======)RAM  77% (========  )-------------->>>----`
+#### `                     CPU   6% (=         )CPU  3.3GHz (=======)RAM  77% (========  )-------------->>>----`
 It means that program correctly connect to device and starts send informations.
 
