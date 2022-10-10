@@ -1,5 +1,6 @@
 baudrate=115200
-
+win_port="COM"
+linux_port="/dev/ttyUSB"
 
 ## library import---------------------------------------------------------------------------------
 from psutil import cpu_percent, cpu_freq, virtual_memory
@@ -69,16 +70,17 @@ def write_cpu_stats(height,width, last_position): #height and width in sign amou
         cpu_usage=int(cpu_percent())
         text+="CPU "+const_number(cpu_usage,100)+"% "
         text+=pointer(cpu_usage+4, width-9)
-
-    cpu_frequent=round(cpu_freq()[0]/1000, 1)
-    cpu_freq_max=round(cpu_freq()[2]/1000, 1)
-    if width<18:
-        text+="Freq "
-        text+=pointer(cpu_frequent/cpu_freq_max*100, width-5)
-    else:
-        text+="CPU "+const_number(cpu_frequent,10)+"GHz "
-        text+=pointer(cpu_frequent/cpu_freq_max*100, width-12)
-
+    try:
+        cpu_frequent=round(cpu_freq()[0]/1000, 1)
+        cpu_freq_max=round(cpu_freq()[2]/1000, 1)
+        if width<18:
+            text+="Freq "
+            text+=pointer(cpu_frequent/cpu_freq_max*100, width-5)
+        else:
+            text+="CPU "+const_number(cpu_frequent,10)+"GHz "
+            text+=pointer(cpu_frequent/cpu_freq_max*100, width-12)
+    except:
+        text+=width*" "
     if width<18:
         ram_usage=int(virtual_memory()[2])
         text+="RAM "
@@ -109,10 +111,10 @@ def find_os():
 def port_conf(os, min_port, max_port):
     port_n=''
     if os=='win':
-        port_n='COM'
+        port_n=win_port
         print(f"Windows port name started at \"{port_n}\"")
     elif os=='linux':
-        port_n='usb'
+        port_n=linux_port
         print(f"Linux port name started at \"{port_n}\"")
     else:
         return None
