@@ -139,17 +139,21 @@ def find_port(port_n, min_port, max_port):
 
 
 ##-----------------------------------------------------------------------------------------------------------------------------
-
-ser = port_conf(find_os(), 0, 10)
-
 last_position=0
-
+ser = port_conf(find_os(), 0, 10)
 while True:
-    if ser==None:
-        print("Device isn't connected")
-        sleep(5)
-        break
-    text, last_position=write_cpu_stats(4,21, last_position)
-    print(text)
-    ser.write(str.encode(text))
-    sleep(1.1)
+    while True:
+        if ser==None:
+            print("Device isn't connected")
+            break
+        text, last_position=write_cpu_stats(4,21, last_position)
+        print(text)
+        try:
+            ser.write(str.encode(text))
+            sleep(1.1)
+        except:
+            print("Connection losted")
+            break
+    sleep(5)
+    print("Try to reconnect...")
+    ser = port_conf(find_os(), 0, 10)
