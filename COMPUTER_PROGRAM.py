@@ -146,7 +146,7 @@ while True:
         if ser==None:
             print("Device isn't connected")
             break
-        text, last_position=write_cpu_stats(4,21, last_position)
+        text, last_position=write_cpu_stats(7,21, last_position)
         print(text)
         try:
             ser.write(str.encode(text))

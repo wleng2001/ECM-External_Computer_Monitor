@@ -15,53 +15,46 @@
 #define SCREEN_ADDRESS 0x3C ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-String tekst="Tak bedzie widoczny twoj tekst po wpisaniu w COM, nie ustawilem jeszcze komend, ktore beda mogly zmieniac wielkosc tekstu ani tez obslugi polskich znakow. Postaram sie to jednak zmienic w przyszlosci a jesli czas i sprzet pozwoli to dodam to i do zegarka.";
+//variables
+const String wellcome="Device isn't connected";
+String text=wellcome //text, which will be displayed
 
-void testscrolltext(String tekst) {
+//functions
+void display_text(String text) {
   display.clearDisplay();
 
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0, 0);
-  display.println(tekst);
+  display.println(text);
   display.display();
 }
 
-String odbior_danych(){
-  String dane="";
+String receive_data(){
+  String data="";
   if(Serial.available() > 0) { //Czy Arduino odebrało dane
-    dane=Serial.readStringUntil('\n'); //Jeśli tak, to odczytaj je do znaku końca linii i zapisz w zmiennej odebraneDane
-    Serial.println("użytkownik: "+dane);
-    
+    data=Serial.readStringUntil('\n'); //read input to '\n' sign
   }
-  return dane;
+  return data;
 }
 
+//program
 void setup() {
   Serial.begin(115200);
-  pinMode(A0,INPUT);
-  delay(5000);
-  Serial.println("dzialam!");
-  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  Serial.println("I'm ready!");
   if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
   }
-
-  // Show initial display buffer contents on the screen --
-  // the library initializes this with an Adafruit splash screen.
   display.display();
-  delay(2000); // Pause for 2 seconds
-
-  // Clear the buffer
   display.clearDisplay();
 }
 
 void loop() {
-  testscrolltext(tekst);
+  display_text(text);
   
-  String tymczasowy_tekst=odbior_danych();
-  if(tymczasowy_tekst!=""){
-    tekst=tymczasowy_tekst;
+  String temporary_text=receive_data();
+  if(temporary_text!=""){
+    text=temporary_text;
   }
 }
