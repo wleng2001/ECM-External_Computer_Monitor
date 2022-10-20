@@ -1,13 +1,14 @@
 baudrate=115200
 win_port="COM"
 linux_port="/dev/ttyUSB"
-
+date_version="2022-10-20"
+repo_name="wleng2001/ECM-External_Computer_Monitor"
 ## library import---------------------------------------------------------------------------------
 from psutil import cpu_percent, cpu_freq, virtual_memory
 from serial import *
 from time import sleep
 from sys import platform
-
+import UPDATE_MODULE
 
 ##functions definition----------------------------------------------------------------------------
 def pointer(precent, length):
@@ -140,6 +141,14 @@ def find_port(port_n, min_port, max_port):
 
 ##-----------------------------------------------------------------------------------------------------------------------------
 last_position=0
+print("Check app version...")
+available_update=UPDATE_MODULE.update_check(date_version, repo_name)
+if available_update==None:
+    print("You don't have internet connection")
+elif available_update==True:
+    print("New version is available!")
+else:
+    print("App is current")
 ser = port_conf(find_os(), 0, 10)
 while True:
     while True:

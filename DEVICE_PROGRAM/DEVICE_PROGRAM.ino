@@ -32,7 +32,7 @@ void display_text(String text) {
 
 String receive_data(){
   String data="";
-  if(Serial.available() > 0) { //Czy Arduino odebrało dane
+  if(Serial.available() > 0) {
     data=Serial.readStringUntil('\n'); //read input to '\n' sign
   }
   return data;
