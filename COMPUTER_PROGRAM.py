@@ -141,15 +141,25 @@ def find_port(port_n, min_port, max_port):
 
 ##-----------------------------------------------------------------------------------------------------------------------------
 last_position=0
-print("Check app version...")
-available_update=UPDATE_MODULE.update_check(date_version, repo_name)
-if available_update==None:
-    print("You don't have internet connection")
-elif available_update==True:
-    print("New version is available!")
+
+UPDATE_MODULE.update_self()
+
+update_available=UPDATE_MODULE.update_check(date_version, repo_name)
+if update_available==None:
+    print("You don't have internet connection.")
+elif update_available==True:
+    print("Update is available!")
+    ask=input("Do you want download it now (Y/n): ")
+    ask=ask.upper()
+    if ask=="Y":
+        if_download=UPDATE_MODULE.download_update_repo("https://github.com/"+repo_name, getcwd())
+        if if_download==False:
+            print("Lost connection file wasn't downloaded")
 else:
     print("App is current")
+
 ser = port_conf(find_os(), 0, 10)
+
 while True:
     while True:
         if ser==None:
