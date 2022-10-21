@@ -144,6 +144,7 @@ last_position=0
 
 UPDATE_MODULE.update_self()
 
+print("Check app update...")
 update_available=UPDATE_MODULE.update_check(date_version, repo_name)
 if update_available==None:
     print("You don't have internet connection.")
