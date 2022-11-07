@@ -15,6 +15,8 @@ You can clone it in linux devices:
 
 or download as a zip file on the github webpage.
 
+In the version is added update module for, which you can install required apps and library <a href="https://github.com/wleng2001/UPM-UPdate_Module_for_app">here</a>.
+
 Next you must check, that you have python, psutil and pyserial library download. You can check it by writting the information in terminal: 
 
 #### `python3 --version` to check if you have python
@@ -62,6 +64,7 @@ If you don't have download pip you can do it by writting the text in terminal:
 ### Windows device
 
 On the windows devices you can download zip file from github and unpack it.
+In the version is added update module for, which you can install required apps and library <a href="https://github.com/wleng2001/UPM-UPdate_Module_for_app">here</a>.
 Next you must check, that you have python, psutil and pyserial library download. You can check it by writting the information in cmd (you can find cmd by typing "cmd" after press **win** key): 
 
 #### `python --version` to check if you have python
@@ -93,11 +96,11 @@ vcgencmd           0.1.1
 If you don't have download python you can do it <a href="https://www.python.org/downloads/">here</a>.
 If you don't have psutil you can install it by written the text in cmd (you can find cmd by typing "cmd" after press **win** key):
 
-#### `pip3 install psutil`
+#### `pip install psutil`
 
 If you don't have download pyserial you can do it by writting the text in cmd: 
 
-#### `sudo pip3 install pyserial`
+#### `pip install pyserial`
 
 if you don't have pip you can install it by writing the command in cmd:
 
