@@ -1,7 +1,8 @@
-baudrate=115200
+baudrate=9600
+new_baudrate=115200
 win_port="COM"
 linux_port="/dev/ttyUSB"
-date_version="2022-10-21"
+date_version="2022-11-07"
 repo_name="wleng2001/ECM-External_Computer_Monitor"
 ## library import---------------------------------------------------------------------------------
 from psutil import cpu_percent, cpu_freq, virtual_memory
@@ -132,6 +133,21 @@ def find_port(port_n, min_port, max_port):
             return None
         try:
             ser = Serial(port=port_n+str(a_port), baudrate=baudrate, parity=PARITY_NONE, stopbits=STOPBITS_ONE, bytesize=EIGHTBITS, timeout=2)
+            ser.write(str.encode("VERSION"))
+            version=ser.read_until(expected='\n')[:-2].decode()
+            if version=="" or len(version)!=16:
+                ser.close()
+                print(f"Device isn't connected to {port_n+str(a_port)}")
+                ser=None
+            else:
+                print(f"Version of the device is: {version}")
+                ser_text="SERIAL "+str(new_baudrate)
+                ser.write(str.encode(ser_text))
+                ser.close()
+                sleep(1)
+                ser = Serial(port=port_n+str(a_port), baudrate=new_baudrate, parity=PARITY_NONE, stopbits=STOPBITS_ONE, bytesize=EIGHTBITS, timeout=2)
+                ser.write(str.encode("SM_M"))
+                sleep(5)
         except:
             print(f"Device isn't connected to {port_n+str(a_port)}")
         if ser!=None:
@@ -142,6 +158,7 @@ def find_port(port_n, min_port, max_port):
 ##-----------------------------------------------------------------------------------------------------------------------------
 last_position=0
 
+print("Check version of update module...")
 UPDATE_MODULE.update_self()
 
 print("Check app update...")
