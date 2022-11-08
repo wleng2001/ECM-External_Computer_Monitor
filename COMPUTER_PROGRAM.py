@@ -2,7 +2,7 @@ baudrate=9600
 new_baudrate=115200
 win_port="COM"
 linux_port="/dev/ttyUSB"
-date_version="2022-11-07"
+date_version="2022-11-08"
 repo_name="wleng2001/ECM-External_Computer_Monitor"
 ## library import---------------------------------------------------------------------------------
 from psutil import cpu_percent, cpu_freq, virtual_memory

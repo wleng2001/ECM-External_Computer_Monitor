@@ -59,15 +59,17 @@ void device_version(String comm){
 void source_monitor(String comm){
   if(comm=="SM_M"){
     display.clearDisplay();
-    display.setCursor(0,3);
     display.setTextSize(1);
+    display.setTextColor(SSD1306_WHITE);
+    display.setCursor(22,1);
     display.print(F("source monitor"));
     display.drawBitmap((display.width()-w_bitmap_source_monitor_48x48)/2, display.height()-h_bitmap_source_monitor_48x48, bitmap_source_monitor_48x48, w_bitmap_source_monitor_48x48, h_bitmap_source_monitor_48x48, 1);
     display.display();
-    delay(1000);
-    String data=receive_data();
+    String data="";
     while(one_word_ret(data)!="EXIT"){
-      display_text(data);
+      if(data!=""){
+        display_text(data); 
+      }
       String temporary_data=receive_data();
       if(temporary_data!=""){
         data=temporary_data;
@@ -78,10 +80,8 @@ void source_monitor(String comm){
 
 void set_baudrate(String comm, String data){
   if(comm=="SERIAL"){
-    data.toInt();
     Serial.begin(data.toInt());
-    delay(5000);
-    Serial.println(F("Serial set to new baudrate"));
+    Serial.printf("Serial set to %d baudrate",data.toInt());
   }
 }
 
