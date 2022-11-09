@@ -2,7 +2,7 @@ baudrate=9600
 new_baudrate=115200
 win_port="COM"
 linux_port="/dev/ttyUSB"
-date_version="2022-11-08"
+date_version="2022-11-10"
 repo_name="wleng2001/ECM-External_Computer_Monitor"
 ## library import---------------------------------------------------------------------------------
 from psutil import cpu_percent, cpu_freq, virtual_memory
@@ -127,7 +127,6 @@ def find_port(port_n, min_port, max_port):
     ser=None
     for a_port in range(min_port, max_port):
         print(f"Search port... I'm on the port: {port_n+str(a_port)}")
-        sleep(0.1)
         if a_port>max_port:
             print("ERROR! Don't find right port in the range.")
             return None
@@ -146,8 +145,8 @@ def find_port(port_n, min_port, max_port):
                 ser.close()
                 sleep(1)
                 ser = Serial(port=port_n+str(a_port), baudrate=new_baudrate, parity=PARITY_NONE, stopbits=STOPBITS_ONE, bytesize=EIGHTBITS, timeout=2)
-                ser.write(str.encode("SM_M"))
-                sleep(5)
+                ser.write(str.encode("T_M"))
+                sleep(1)
         except:
             print(f"Device isn't connected to {port_n+str(a_port)}")
         if ser!=None:
