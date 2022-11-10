@@ -4,6 +4,7 @@ win_port="COM"
 linux_port="/dev/ttyUSB"
 date_version="2022-11-10"
 repo_name="wleng2001/ECM-External_Computer_Monitor"
+mode="sm" # if mode = "txt" it shows data in text mode if mode = "sm" it display data in graphic mode
 ## library import---------------------------------------------------------------------------------
 from psutil import cpu_percent, cpu_freq, virtual_memory
 from serial import *
@@ -59,7 +60,7 @@ def const_number(number, max_lenght):
        i*=10    
     return ret_number+str(number)
 
-def write_cpu_stats(height,width, last_position): #height and width in sign amount
+def write_cpu_stats_t(height,width, last_position): #height and width in sign amount
     text=""
     center_h=int(height/3)
     for i in range(0,width*center_h,1):
@@ -96,6 +97,23 @@ def write_cpu_stats(height,width, last_position): #height and width in sign amou
     text+=text1
 
     return text, last_position
+
+def write_cpu_stats_g(last_position):
+    text=""
+    cpu_usage=int(cpu_percent())
+    text+=const_number(cpu_usage,100)
+    try:
+        cpu_frequent=round(cpu_freq()[0]/1000, 1)
+        cpu_freq_max=round(cpu_freq()[2]/1000, 1)
+        cpu_f_p=int(cpu_frequent/cpu_freq_max*100)
+        text+=const_number(cpu_f_p,1000)
+    except:
+        text+="    "
+    ram_usage=int(virtual_memory()[2])
+    text+=const_number(ram_usage,1000)
+    if last_position==8:
+        last_position=-1
+    return text, last_position+1
 
 #find os
 def find_os():
@@ -145,7 +163,10 @@ def find_port(port_n, min_port, max_port):
                 ser.close()
                 sleep(1)
                 ser = Serial(port=port_n+str(a_port), baudrate=new_baudrate, parity=PARITY_NONE, stopbits=STOPBITS_ONE, bytesize=EIGHTBITS, timeout=2)
-                ser.write(str.encode("T_M"))
+                if mode=="txt":
+                    ser.write(str.encode("T_M"))
+                elif mode=="sm":
+                    ser.write(str.encode("SM_M"))
                 sleep(1)
         except:
             print(f"Device isn't connected to {port_n+str(a_port)}")
@@ -182,14 +203,19 @@ while True:
         if ser==None:
             print("Device isn't connected")
             break
-        text, last_position=write_cpu_stats(7,21, last_position)
-        print(text)
+        if mode=="txt":
+            sleep(1.1)
+            text, last_position=write_cpu_stats_t(7,21, last_position)
+            print(text)
+        elif mode=="sm":
+            sleep(1.1)
+            text, last_position=write_cpu_stats_g(last_position)
+            print(text)
         try:
             ser.write(str.encode(text))
-            sleep(1.1)
         except:
             print("Connection losted")
             break
-    sleep(5)
+    sleep(2)
     print("Try to reconnect...")
     ser = port_conf(find_os(), 0, 10)

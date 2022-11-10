@@ -123,7 +123,7 @@ void source_monitor(String comm){
         
         char ram_c[]={0,0,0};
         j=0;
-        for(byte i=7; i<=11; i++){
+        for(byte i=8; i<=10; i++){
           ram_c[j]=data[i];
           j++;
         }
