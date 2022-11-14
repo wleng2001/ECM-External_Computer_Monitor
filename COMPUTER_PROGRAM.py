@@ -2,7 +2,7 @@ baudrate=9600
 new_baudrate=115200
 win_port="COM"
 linux_port="/dev/ttyUSB"
-date_version="2022-11-10"
+date_version="2022-11-14"
 repo_name="wleng2001/ECM-External_Computer_Monitor"
 mode="sm" # if mode = "txt" it shows data in text mode if mode = "sm" it display data in graphic mode
 ## library import---------------------------------------------------------------------------------
@@ -145,14 +145,11 @@ def find_port(port_n, min_port, max_port):
     ser=None
     for a_port in range(min_port, max_port):
         print(f"Search port... I'm on the port: {port_n+str(a_port)}")
-        if a_port>max_port:
-            print("ERROR! Don't find right port in the range.")
-            return None
         try:
             ser = Serial(port=port_n+str(a_port), baudrate=baudrate, parity=PARITY_NONE, stopbits=STOPBITS_ONE, bytesize=EIGHTBITS, timeout=2)
             ser.write(str.encode("VERSION"))
             version=ser.read_until(expected='\n')[:-2].decode()
-            if version=="" or len(version)!=16:
+            if version.count("-")!=3:
                 ser.close()
                 print(f"Device isn't connected to {port_n+str(a_port)}")
                 ser=None
@@ -170,6 +167,9 @@ def find_port(port_n, min_port, max_port):
                 sleep(1)
         except:
             print(f"Device isn't connected to {port_n+str(a_port)}")
+        if a_port>=max_port-1:
+            print("ERROR! Don't find right port in the range.")
+            return None
         if ser!=None:
             break
     return ser

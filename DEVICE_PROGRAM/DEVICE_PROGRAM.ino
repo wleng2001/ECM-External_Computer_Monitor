@@ -1,4 +1,6 @@
 #define v_of_dev "wen82-182x64-g-w" //version of device, which read computer program, when first section means version of microcontroller second resolution of display, third that display is graphical or text, last section means that device have some additional function (button for example)
+#define word_high 7
+#define word_width 7
 
 #include <SPI.h>
 #include <Wire.h>
@@ -132,19 +134,20 @@ void source_monitor(String comm){
         display.clearDisplay();
         display.setTextSize(1);
         display.setTextColor(SSD1306_WHITE);
-        display.setCursor(1, display.height()/2-12);
-        display.print(F("CPU "));
+        display.setCursor(0, 0);
+        display.print(F("CPU"));
+        display.setCursor(0, word_high+2);
         display.print(cpu);
         display.print(F("%"));
-        h_bar(display.height()/2-12, 50, 7, display.width()-51, cpu);
-        display.setCursor(1, display.height()/2);
+        h_bar(0, word_width*3, word_high*2+2, display.width()-word_width*3-3, cpu);
+        display.setCursor(0, word_high*2+2*2);
         display.print(F("GHZ"));
-        h_bar(display.height()/2, 25, 7, display.width()-26, cpu_f);
-        display.setCursor(1, display.height()/2+12);
+        h_bar(word_high*2+2*2, word_width*3+1, 7, display.width()-word_width*3-3, cpu_f);
+        display.setCursor(0,word_high*3+2*3);
         display.print(F("RAM "));
         display.print(ram);
         display.print(F("%"));
-        h_bar(display.height()/2+10, 50, 7, display.width()-51, ram);
+        h_bar(word_high*3+2*3, word_width*7, 7, display.width()-word_width*7-3, ram);
         display.display();
         
       }
