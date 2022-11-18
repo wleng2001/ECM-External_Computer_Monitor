@@ -2,13 +2,14 @@ baudrate=9600
 new_baudrate=115200
 win_port="COM"
 linux_port="/dev/ttyUSB"
-date_version="2022-11-14"
+date_version="2022-11-18"
 repo_name="wleng2001/ECM-External_Computer_Monitor"
 mode="sm" # if mode = "txt" it shows data in text mode if mode = "sm" it display data in graphic mode
 ## library import---------------------------------------------------------------------------------
 from psutil import cpu_percent, cpu_freq, virtual_memory
 from serial import *
 from time import sleep
+from os import getcwd
 from sys import platform
 import UPDATE_MODULE
 
