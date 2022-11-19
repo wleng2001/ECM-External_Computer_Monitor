@@ -17,9 +17,10 @@ url="https://raw.rawgit.net/wleng2001/UPM-UPdate_Module_for_app/main/UPDATE_MODU
 new_version_name="UPDATE_MODULE.py"
 #turn on admin permission
 def admin():#put it in second line after import UPDATE_MODULE
-    if ctypes.windll.shell32.IsUserAnAdmin()==False:
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", executable, " ".join(argv), None, 1)
-        quit()
+    if find_os()=='win':
+        if ctypes.windll.shell32.IsUserAnAdmin()==False:
+            ctypes.windll.shell32.ShellExecuteW(None, "runas", executable, " ".join(argv), None, 1)
+            quit()
 
 #update check-------------------
 def update_check(last_update, repo_name):
@@ -39,6 +40,14 @@ def update_check(last_update, repo_name):
 #find os
 def find_os():
     if platform=='win32':
+        return 'win'
+    elif platform=='linux' or platform=='linux2':
+        return 'linux'
+    else:
+        return 'OS X'
+
+def find_os_f_s():
+    if platform=='win32':
         return '\\'
     elif platform=='linux' or platform=='linux2':
         return '/'
@@ -48,7 +57,7 @@ def find_os():
 #remove files and destination
 
 def remove_d_f(destination):
-    file_sep=find_os()
+    file_sep=find_os_f_s()
     git_in_d=False
     for i in destination.split(file_sep):
         if '.git' ==i:
@@ -72,7 +81,7 @@ def remove_d_f(destination):
 
 #move download files
 def move_files(file_path, destination, files=[]): #You don't have to give, which file you want to move if you want move all files in path
-    file_sep=find_os()
+    file_sep=find_os_f_s()
     if files!=[]:
         for i in files:
             try:
@@ -90,7 +99,7 @@ def move_files(file_path, destination, files=[]): #You don't have to give, which
 #download update
 def download_update_repo(url, path):#if you don't want to move all files you can add to files in your repo file "files_to_move.txt", which will be include files to move separate by ", "
     folder=url.split('/')[-1]
-    file_sep=find_os()
+    file_sep=find_os_f_s()
     next=False
     try:
         git.Git(path).clone(url)
