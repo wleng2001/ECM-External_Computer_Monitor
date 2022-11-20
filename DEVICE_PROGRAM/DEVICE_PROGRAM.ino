@@ -162,7 +162,9 @@ void source_monitor(String comm){
 void set_baudrate(String comm, String data){
   if(comm=="SERIAL"){
     Serial.begin(data.toInt());
-    Serial.printf("Serial set to %d baudrate",data.toInt());
+    Serial.print("Serial set to ");
+    Serial.print(data.toInt()); 
+    Serial.println("baudrate");
   }
 }
 
